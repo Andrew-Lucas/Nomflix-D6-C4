@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import { IApiMovieORTv } from '../api'
-import { makeImage } from '../utils'
+import { clickedItemCategory, makeImage } from '../utils'
 
 const SliderHolder = styled.div`
   position: relative;
@@ -81,6 +82,8 @@ interface iSlider {
   idURL: string
 }
 function Slider({ component, idURL }: iSlider) {
+  const recoilCategory = useRecoilValue(clickedItemCategory)
+
   const ofset = 6
   const [slideIndex, setSlideIndex] = useState(0)
 
@@ -107,20 +110,27 @@ function Slider({ component, idURL }: iSlider) {
             {component?.results
               .slice(1)
               .slice(ofset * slideIndex, ofset * slideIndex + ofset)
-              .map((movie) => (
-                <SlideItem
-                  onClick={() => changeUrl(`/${idURL}/${movie.id}`)}
-                  variants={slideItemVariant}
-                  layoutId={movie.id + ''}
-                  whileHover="onHover"
-                  posterimage={makeImage(
-                    movie.poster_path || movie.backdrop_path,
-                    'w500'
-                  )}
-                  key={movie.id}>
-                  <ItemInfo variants={ItemInfoVariant}>{movie.title}</ItemInfo>
-                </SlideItem>
-              ))}
+              .map((movie, index) => {
+                return (
+                  <SlideItem
+                    onClick={() => {
+                      /* setToogle() */
+                      changeUrl(`/${idURL}/${movie.id}`)
+                    }}
+                    variants={slideItemVariant}
+                    layoutId={String(recoilCategory! + movie.id)}
+                    whileHover="onHover"
+                    posterimage={makeImage(
+                      movie.poster_path || movie.backdrop_path,
+                      'w500'
+                    )}
+                    key={movie.id}>
+                    <ItemInfo variants={ItemInfoVariant}>
+                      {movie.title}
+                    </ItemInfo>
+                  </SlideItem>
+                )
+              })}
           </SliderRow>
         </AnimatePresence>
       </SliderHolder>

@@ -39,7 +39,7 @@ const CoverMovieOverview = styled.h2`
   width: 50%;
 `
 
-const TopratedTV = styled.section`
+const PopularTv = styled.section`
   position: relative;
   margin-bottom: 25px;
 `
@@ -52,7 +52,7 @@ const LatestTV = styled.section`
   position: relative;
   bottom: -400px;
 `
-const PopularTv = styled.section`
+const TopratedTV = styled.section`
   position: relative;
   bottom: -600px;
 `
@@ -112,10 +112,11 @@ function Tv() {
               {topratedTV?.results[0].overview}
             </CoverMovieOverview>
           </Banner>
-          <TopratedTV>
-            <CategoryHeading>Top Rated TV Shows</CategoryHeading>
-            <Slider component={topratedTV} idURL="tvShow" />
-          </TopratedTV>
+
+          <PopularTv>
+            <CategoryHeading>Popular TV Shows</CategoryHeading>
+            <Slider component={popularTV} idURL="tvShow" />
+          </PopularTv>
 
           <AiringTodayTV>
             <CategoryHeading>Tv Shows on air today</CategoryHeading>
@@ -127,10 +128,10 @@ function Tv() {
             <Slider component={latestTV} idURL="tvShow" />
           </LatestTV>
 
-          <PopularTv>
-            <CategoryHeading>Popular TV Shows</CategoryHeading>
-            <Slider component={popularTV} idURL="tvShow" />
-          </PopularTv>
+          <TopratedTV>
+            <CategoryHeading>Top Rated TV Shows</CategoryHeading>
+            <Slider component={topratedTV} idURL="tvShow" />
+          </TopratedTV>
 
           <OverLayPopupComponent
             isPopup={isPopup}

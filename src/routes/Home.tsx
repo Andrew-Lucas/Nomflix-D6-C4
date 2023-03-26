@@ -20,7 +20,10 @@ const Banner = styled.main<{ coverimage: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), ${({theme})=> theme.dark.normalDark}),
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0),
+      ${({ theme }) => theme.dark.normalDark}
+    ),
     url(${({ coverimage }) => coverimage});
   background-size: cover;
 `
@@ -34,7 +37,7 @@ const CoverMovieOverview = styled.h2`
   width: 50%;
 `
 
-const LatestMovies = styled.section`
+const TopratedMovies = styled.section`
   position: relative;
   margin-bottom: 25px;
 `
@@ -43,7 +46,7 @@ const UpcomingMovies = styled.section`
   bottom: -200px;
   margin-bottom: 25px;
 `
-const TopratedMovies = styled.section`
+const LatestMovies = styled.section`
   position: relative;
   bottom: -400px;
 `
@@ -73,7 +76,7 @@ function Home() {
   }
 
   const [
-    { isLoading: loadingPopular, data: popularMovies },
+    { isLoading: loadingLatest, data: latestMovies },
     { isLoading: loadingUpcoming, data: upcomingMovies },
     { isLoading: loadingToprated, data: topratedMovies },
   ] = useMultipleQueries()
@@ -83,46 +86,46 @@ function Home() {
 
   const clickedMovie =
     (isPopup?.params.movieId &&
-      popularMovies?.results.find(
+      latestMovies?.results.find(
         (movie) => movie.id + '' === isPopup?.params.movieId
       )) ||
     topratedMovies?.results.find(
       (movie) => movie.id + '' === isPopup?.params.movieId
     ) ||
-    popularMovies?.results.find(
+    latestMovies?.results.find(
       (movie) => movie.id + '' === isPopup?.params.movieId
     )
 
   return (
     <Wrapper>
-      {loadingPopular || loadingUpcoming || loadingToprated ? (
+      {loadingLatest || loadingUpcoming || loadingToprated ? (
         <SkeletonLoader />
-      ) : upcomingMovies || popularMovies || topratedMovies ? (
+      ) : upcomingMovies || latestMovies || topratedMovies ? (
         <>
           <Banner
             coverimage={makeImage(
-              popularMovies?.results[0].backdrop_path || ''
+              latestMovies?.results[0].backdrop_path || ''
             )}>
-            <CoverMovieTitle>{popularMovies?.results[0].title}</CoverMovieTitle>
+            <CoverMovieTitle>{latestMovies?.results[0].title}</CoverMovieTitle>
             <CoverMovieOverview>
-              {popularMovies?.results[0].overview}
+              {latestMovies?.results[0].overview}
             </CoverMovieOverview>
           </Banner>
 
-          <LatestMovies>
-            <CategoryHeading>Latest Movies</CategoryHeading>
-            <Slider component={popularMovies} idURL="movie" />
-          </LatestMovies>
+          <TopratedMovies>
+            <CategoryHeading>Top Rated Movies</CategoryHeading>
+            <Slider component={topratedMovies} idURL="movie" />
+          </TopratedMovies>
 
           <UpcomingMovies>
             <CategoryHeading>Upcoming Movies</CategoryHeading>
             <Slider component={upcomingMovies} idURL="movie" />
           </UpcomingMovies>
 
-          <TopratedMovies>
-            <CategoryHeading>Top Rated Movies</CategoryHeading>
-            <Slider component={topratedMovies} idURL="movie" />
-          </TopratedMovies>
+          <LatestMovies>
+            <CategoryHeading>Latest Movies</CategoryHeading>
+            <Slider component={latestMovies} idURL="movie" />
+          </LatestMovies>
 
           <OverLayPopupComponent
             isPopup={isPopup}

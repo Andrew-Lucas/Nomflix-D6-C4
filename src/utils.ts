@@ -1,4 +1,4 @@
-import { atom } from "recoil"
+import { atom } from 'recoil'
 
 export function makeImage(
   id: string,
@@ -8,6 +8,11 @@ export function makeImage(
 }
 
 export const SearchedKeyword = atom({
-  key: "Keyword",
-  default: ""
+  key: 'Keyword',
+  default: '',
+})
+
+export const clickedItemCategory = atom<null | string>({
+  key: 'ClickedItemCetegory',
+  default: null,
 })
